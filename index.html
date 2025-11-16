@@ -311,7 +311,10 @@
 
     <h3>💾 Exportar / Importar Dados</h3>
     <button class="btn-exportar" onclick="exportarJSON()">📤 Exportar JSON</button>
-    <input type="file" id="arquivoJSON" accept=".json" onchange="importarJSON(event)" />
+    <label for="arquivoJSON" style="display: block; margin-top: 15px; cursor: pointer;">
+        <input type="file" id="arquivoJSON" accept=".json" style="display: none;" onchange="importarJSON(event)" />
+        <button type="button" onclick="document.getElementById('arquivoJSON').click()" style="margin-top: 0;">📥 Importar JSON</button>
+    </label>
     
     <h3>🗑️ Limpar Todos os Dados</h3>
     <div class="alert-box">
@@ -659,4 +662,28 @@ function calcular() {
     resultado += `<strong>📊 Pontos atuais:</strong> ${pontosAtuais} (necessário: ${pontosNecessarios}).<br>`;
 
     if (faltaPontos > 0)
-        resultado += `Faltam <strong>${faltaPon
+        resultado += `Faltam <strong>${faltaPontos}</strong> pontos para atingir a pontuação necessária.<br>`;
+    else
+        resultado += `<span style="color: #4CAF50; font-weight: bold;">✅ Pontuação suficiente para se aposentar por pontos!</span><br>`;
+
+    if (anosFaltamIdade > 0)
+        resultado += `Faltam <strong>${anosFaltamIdade}</strong> anos para atingir a idade mínima de aposentadoria (${idadeAposentadoria} anos).`;
+    else
+        resultado += `<span style="color: #4CAF50; font-weight: bold;">✅ Idade mínima já atingida!</span>`;
+
+    const divResultado = document.getElementById('resultado');
+    divResultado.innerHTML = resultado;
+    divResultado.style.display = 'block';
+    
+    // Scroll suave com timeout para evitar travamentos
+    setTimeout(() => {
+        divResultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+}
+
+// Carregar dados pessoais ao iniciar
+carregarDadosPessoais();
+renderContratos();
+</script>
+</body>
+</html>
