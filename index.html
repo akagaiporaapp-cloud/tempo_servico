@@ -203,12 +203,68 @@
     }
     
     input[type="file"] {
-        margin-top: 10px;
-        padding: 10px;
-        border: 2px dashed #667eea;
-        border-radius: 8px;
-        width: 100%;
-        cursor: pointer;
+        display: none;
+    }
+    
+    .btn-importar {
+        background: #17a2b8 !important;
+    }
+    
+    .btn-importar:hover {
+        background: #138496 !important;
+    }
+    
+    .btn-compartilhar {
+        background: #28a745 !important;
+    }
+    
+    .btn-compartilhar:hover {
+        background: #218838 !important;
+    }
+    
+    .share-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+    
+    .share-buttons button {
+        flex: 1;
+        min-width: 150px;
+        margin-top: 0;
+    }
+    
+    .whatsapp-btn {
+        background: #25D366 !important;
+    }
+    
+    .whatsapp-btn:hover {
+        background: #1fb855 !important;
+    }
+    
+    .telegram-btn {
+        background: #0088cc !important;
+    }
+    
+    .telegram-btn:hover {
+        background: #0077b3 !important;
+    }
+    
+    .email-btn {
+        background: #D44638 !important;
+    }
+    
+    .email-btn:hover {
+        background: #c23321 !important;
+    }
+    
+    .copy-btn {
+        background: #6c757d !important;
+    }
+    
+    .copy-btn:hover {
+        background: #5a6268 !important;
     }
     
     .empty-state {
@@ -533,84 +589,87 @@ function exportarJSON() {
 
 function importarJSON(event) {
     const file = event.target.files[0];
-    if (!file) return;
+    if (!file) {
+        console.log("Nenhum arquivo selecionado");
+        return;
+    }
+
+    console.log("Arquivo selecionado:", file.name, file.type, file.size);
 
     const reader = new FileReader();
+    
     reader.onload = (e) => {
         try {
-            const dadosImportados = JSON.parse(e.target.result);
+            const conteudo = e.target.result;
+            console.log("Conteúdo lido:", conteudo);
             
-            console.log("Dados importados:", dadosImportados); // Debug
+            const dadosImportados = JSON.parse(conteudo);
+            console.log("Dados parseados:", dadosImportados);
+            
+            let sucesso = false;
             
             // Verifica se é o formato novo (com dadosPessoais e contratos)
             if (dadosImportados && typeof dadosImportados === 'object') {
                 
                 // Formato completo: { dadosPessoais: {...}, contratos: [...] }
-                if (dadosImportados.dadosPessoais && Array.isArray(dadosImportados.contratos)) {
-                    contratos = dadosImportados.contratos;
-                    dadosPessoais = dadosImportados.dadosPessoais;
-                    
-                    salvarLocal();
-                    localStorage.setItem('dadosPessoais', JSON.stringify(dadosPessoais));
-                    
-                    carregarDadosPessoais();
-                    renderContratos();
-                    
-                    alert("✅ Dados importados com sucesso!\n\n" + 
-                          `Contratos: ${contratos.length}\n` +
-                          `Data de nascimento: ${dadosPessoais.nascimento || 'Não informada'}\n` +
-                          `Sexo: ${dadosPessoais.sexo === 'M' ? 'Homem' : 'Mulher'}`);
-                } 
-                // Formato antigo: apenas array de contratos
-                else if (Array.isArray(dadosImportados)) {
-                    contratos = dadosImportados;
-                    salvarLocal();
-                    renderContratos();
-                    alert(`✅ Contratos importados com sucesso!\n\nTotal: ${contratos.length} contratos`);
-                }
-                // Tenta verificar se tem apenas a propriedade contratos
-                else if (dadosImportados.contratos && Array.isArray(dadosImportados.contratos)) {
+                if (dadosImportados.contratos && Array.isArray(dadosImportados.contratos)) {
+                    console.log("Formato completo detectado");
                     contratos = dadosImportados.contratos;
                     
-                    // Se tiver dadosPessoais, importa também
                     if (dadosImportados.dadosPessoais) {
                         dadosPessoais = dadosImportados.dadosPessoais;
                         localStorage.setItem('dadosPessoais', JSON.stringify(dadosPessoais));
                         carregarDadosPessoais();
+                        console.log("Dados pessoais importados:", dadosPessoais);
                     }
                     
                     salvarLocal();
                     renderContratos();
-                    alert(`✅ Dados importados com sucesso!\n\nTotal: ${contratos.length} contratos`);
+                    sucesso = true;
+                    
+                    alert("✅ Dados importados com sucesso!\n\n" + 
+                          `📋 Contratos: ${contratos.length}\n` +
+                          `👤 Data de nascimento: ${dadosPessoais.nascimento || 'Não informada'}\n` +
+                          `⚥ Sexo: ${dadosPessoais.sexo === 'M' ? 'Homem' : 'Mulher'}`);
+                } 
+                // Formato antigo: apenas array de contratos
+                else if (Array.isArray(dadosImportados)) {
+                    console.log("Formato array detectado");
+                    contratos = dadosImportados;
+                    salvarLocal();
+                    renderContratos();
+                    sucesso = true;
+                    alert(`✅ Contratos importados com sucesso!\n\n📋 Total: ${contratos.length} contratos`);
                 }
-                else {
-                    alert("❌ O arquivo JSON não contém um formato válido.\n\n" +
-                          "Formato esperado:\n" +
-                          "• Array de contratos, ou\n" +
-                          "• Objeto com 'contratos' e 'dadosPessoais'");
-                    console.error("Formato inválido:", dadosImportados);
-                }
-            } 
-            else {
-                alert("❌ O arquivo JSON não pôde ser lido corretamente.");
             }
             
-            // Limpar o input file
-            event.target.value = '';
+            if (!sucesso) {
+                alert("❌ O arquivo JSON não contém um formato válido.\n\n" +
+                      "Formato esperado:\n" +
+                      "• { contratos: [...], dadosPessoais: {...} }\n" +
+                      "• [ {...}, {...} ] (array de contratos)");
+                console.error("Formato inválido detectado:", dadosImportados);
+            }
+            
         } catch (error) {
             alert("❌ Erro ao processar o arquivo JSON.\n\n" +
-                  "Verifique se o arquivo está corrompido ou tem formato inválido.\n\n" +
-                  "Erro: " + error.message);
-            console.error("Erro na importação: ", error);
+                  "Detalhes: " + error.message + "\n\n" +
+                  "Verifique se o arquivo está corrompido.");
+            console.error("Erro na importação:", error);
+        } finally {
+            // Limpar o input file sempre
             event.target.value = '';
+            console.log("Input file limpo");
         }
     };
     
-    reader.onerror = () => {
+    reader.onerror = (error) => {
         alert("❌ Erro ao ler o arquivo. Tente novamente.");
+        console.error("Erro ao ler arquivo:", error);
         event.target.value = '';
     };
     
+    console.log("Iniciando leitura do arquivo...");
     reader.readAsText(file);
 }
 
