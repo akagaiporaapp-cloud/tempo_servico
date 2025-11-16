@@ -9,12 +9,18 @@
         box-sizing: border-box;
     }
     
+    html {
+        scroll-behavior: smooth;
+    }
+    
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         margin: 0;
         padding: 20px;
         min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
     
     h1 {
@@ -35,6 +41,590 @@
     
     h3 {
         color: #667eea;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 10px;
+        margin-top: 30px;
+    }
+    
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    input:not([type="checkbox"]):not([type="file"]), select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border-radius: 8px;
+        border: 2px solid #e0e0e0;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+    
+    input:not([type="checkbox"]):not([type="file"]):focus, select:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+    
+    input:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        padding: 10px;
+        background: #f8f9ff;
+        border-radius: 8px;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    
+    .checkbox-group label {
+        margin: 0;
+        font-weight: normal;
+        display: inline;
+        cursor: pointer;
+    }
+    
+    button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #4CAF50;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    button:hover {
+        background: #45a049;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+    
+    button:active {
+        transform: translateY(0);
+    }
+    
+    .contratos-lista {
+        list-style: none;
+        padding: 0;
+        margin-top: 15px;
+    }
+    
+    .contratos-lista li {
+        background: linear-gradient(135deg, #e9e9ff 0%, #f0f0ff 100%);
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        border-left: 4px solid #667eea;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .contratos-lista li span {
+        margin-right: 10px;
+        flex-grow: 1;
+        line-height: 1.6;
+        color: #333;
+    }
+    
+    .contratos-lista li strong {
+        color: #667eea;
+        font-size: 16px;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .contratos-lista button {
+        margin: 0;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+    
+    .btn-editar {
+        background: #5bc0de !important;
+    }
+    
+    .btn-editar:hover {
+        background: #46b8da !important;
+    }
+    
+    .btn-excluir {
+        background: #d9534f !important;
+    }
+    
+    .btn-excluir:hover {
+        background: #c9302c !important;
+    }
+    
+    .btn-exportar {
+        background: #f0ad4e !important;
+    }
+    
+    .btn-exportar:hover {
+        background: #ec971f !important;
+    }
+    
+    .resultado {
+        margin-top: 25px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 5px solid #4CAF50;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        line-height: 1.8;
+    }
+    
+    .resultado strong {
+        color: #667eea;
+    }
+    
+    input[type="file"] {
+        margin-top: 10px;
+        padding: 10px;
+        border: 2px dashed #667eea;
+        border-radius: 8px;
+        width: 100%;
+        cursor: pointer;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #999;
+        font-style: italic;
+    }
+    
+    .btn-limpar {
+        background: #ff5722 !important;
+    }
+    
+    .btn-limpar:hover {
+        background: #e64a19 !important;
+    }
+    
+    .alert-box {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 8px;
+        color: #856404;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        
+        .container {
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 24px;
+        }
+        
+        button {
+            width: 100%;
+        }
+        
+        .button-group {
+            width: 100%;
+        }
+        
+        .button-group button {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .contratos-lista li {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .contratos-lista li span {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+<h1>⏱️ Controle de Tempo de Serviço</h1>
+<div class="container">
+
+    <label>Data de Nascimento:</label>
+    <input type="date" id="nascimento" onchange="salvarDadosPessoais()" />
+
+    <label>Sexo:</label>
+    <select id="sexo" onchange="salvarDadosPessoais()">
+        <option value="M">Homem</option>
+        <option value="F">Mulher</option>
+    </select>
+
+    <h3>📋 Adicionar Contrato</h3>
+
+    <label>Nome da Empresa:</label>
+    <input type="text" id="empresa" placeholder="Ex: Google, Empresa X" />
+
+    <label>Início do Contrato:</label>
+    <input type="date" id="inicio" />
+
+    <label>Término do Contrato:</label>
+    <input type="date" id="fim" />
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="ativo" onchange="toggleFim()" />
+        <label for="ativo">Emprego Atual (Serviço Ativo)</label>
+    </div>
+
+    <button onclick="adicionarContrato()">➕ Adicionar Contrato</button>
+
+    <h3>📑 Contratos Registrados</h3>
+    <ul id="listaContratos" class="contratos-lista"></ul>
+
+    <button onclick="calcular()">🧮 Calcular Tempo Total e Aposentadoria</button>
+
+    <h3>💾 Exportar / Importar Dados</h3>
+    <button class="btn-exportar" onclick="exportarJSON()">📤 Exportar JSON</button>
+    <input type="file" id="arquivoJSON" accept=".json" onchange="importarJSON(event)" />
+    
+    <h3>🗑️ Limpar Todos os Dados</h3>
+    <div class="alert-box">
+        ⚠️ <strong>Atenção:</strong> Esta ação irá apagar todos os seus contratos e dados pessoais salvos. Esta ação não pode ser desfeita!
+    </div>
+    <button class="btn-limpar" onclick="limparTodosDados()">🗑️ Limpar Todos os Dados</button>
+
+    <div id="resultado" class="resultado" style="display:none;"></div>
+</div>
+
+<script>
+let contratos = JSON.parse(localStorage.getItem('contratos')) || [];
+let dadosPessoais = JSON.parse(localStorage.getItem('dadosPessoais')) || { nascimento: '', sexo: 'M' };
+
+function salvarLocal() {
+    localStorage.setItem('contratos', JSON.stringify(contratos));
+}
+
+function salvarDadosPessoais() {
+    const nascimento = document.getElementById('nascimento').value;
+    const sexo = document.getElementById('sexo').value;
+    
+    dadosPessoais = { nascimento, sexo };
+    localStorage.setItem('dadosPessoais', JSON.stringify(dadosPessoais));
+}
+
+function carregarDadosPessoais() {
+    document.getElementById('nascimento').value = dadosPessoais.nascimento || '';
+    document.getElementById('sexo').value = dadosPessoais.sexo || 'M';
+}
+
+function limparTodosDados() {
+    const confirmacao = confirm('⚠️ ATENÇÃO!\n\nVocê tem certeza que deseja apagar TODOS os dados?\n\nIsso inclui:\n• Todos os contratos registrados\n• Data de nascimento\n• Sexo\n\nEsta ação NÃO pode ser desfeita!\n\nDeseja continuar?');
+    
+    if (confirmacao) {
+        const confirmaFinal = confirm('🚨 ÚLTIMA CONFIRMAÇÃO!\n\nTodos os seus dados serão perdidos permanentemente.\n\nTem ABSOLUTA certeza?');
+        
+        if (confirmaFinal) {
+            // Limpar localStorage
+            localStorage.removeItem('contratos');
+            localStorage.removeItem('dadosPessoais');
+            
+            // Limpar variáveis
+            contratos = [];
+            dadosPessoais = { nascimento: '', sexo: 'M' };
+            
+            // Limpar campos
+            document.getElementById('nascimento').value = '';
+            document.getElementById('sexo').value = 'M';
+            document.getElementById('empresa').value = '';
+            document.getElementById('inicio').value = '';
+            document.getElementById('fim').value = '';
+            document.getElementById('ativo').checked = false;
+            document.getElementById('resultado').style.display = 'none';
+            
+            // Atualizar lista
+            renderContratos();
+            
+            alert('✅ Todos os dados foram apagados com sucesso!');
+        }
+    }
+}
+
+function diferencaData(inicio, fim) {
+    const dataFim = fim ? new Date(fim) : new Date();
+    const dataInicio = new Date(inicio);
+
+    let anos = dataFim.getFullYear() - dataInicio.getFullYear();
+    let meses = dataFim.getMonth() - dataInicio.getMonth();
+    let dias = dataFim.getDate() - dataInicio.getDate();
+
+    if (dias < 0) {
+        meses--;
+        dias += new Date(dataFim.getFullYear(), dataFim.getMonth(), 0).getDate();
+    }
+    if (meses < 0) {
+        anos--;
+        meses += 12;
+    }
+    return { anos, meses, dias };
+}
+
+function toggleFim() {
+    const fimInput = document.getElementById('fim');
+    const ativoCheckbox = document.getElementById('ativo');
+
+    if (ativoCheckbox.checked) {
+        fimInput.disabled = true;
+        fimInput.value = '';
+    } else {
+        fimInput.disabled = false;
+    }
+}
+
+function renderContratos() {
+    const lista = document.getElementById('listaContratos');
+    lista.innerHTML = '';
+
+    if (contratos.length === 0) {
+        lista.innerHTML = '<div class="empty-state">Nenhum contrato registrado ainda. Adicione seu primeiro contrato acima!</div>';
+        return;
+    }
+
+    contratos.forEach((c, i) => {
+        const li = document.createElement('li');
+        
+        const statusFim = c.fim ? c.fim : '<strong style="color: #4CAF50;">Ativo (Atual)</strong>';
+        
+        li.innerHTML = `
+            <span>
+                <strong>${c.empresa || 'Empresa Não Informada'}</strong><br>
+                📅 Início: ${formatarData(c.inicio)} | Fim: ${c.fim ? formatarData(c.fim) : statusFim}
+            </span>
+        `;
+
+        const buttonGroup = document.createElement('div');
+        buttonGroup.className = 'button-group';
+
+        const btnEditar = document.createElement('button');
+        btnEditar.textContent = '✏️ Editar';
+        btnEditar.className = 'btn-editar';
+        btnEditar.onclick = () => editarContrato(i);
+
+        const btnExcluir = document.createElement('button');
+        btnExcluir.textContent = '🗑️ Excluir';
+        btnExcluir.className = 'btn-excluir';
+        btnExcluir.onclick = () => excluirContrato(i);
+
+        buttonGroup.appendChild(btnEditar);
+        buttonGroup.appendChild(btnExcluir);
+        li.appendChild(buttonGroup);
+        lista.appendChild(li);
+    });
+}
+
+function formatarData(dataStr) {
+    if (!dataStr) return '';
+    const [ano, mes, dia] = dataStr.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
+
+function adicionarContrato() {
+    const empresa = document.getElementById('empresa').value.trim();
+    const inicio = document.getElementById('inicio').value;
+    const fim = document.getElementById('fim').value;
+    const ativo = document.getElementById('ativo').checked;
+
+    if (!inicio) return alert("⚠️ Preencha a data de início");
+
+    const dataFim = ativo ? null : fim;
+
+    if (!ativo && !fim) return alert("⚠️ Preencha a data de término ou marque 'Emprego Atual'.");
+
+    contratos.push({ empresa, inicio, fim: dataFim });
+    salvarLocal();
+    renderContratos();
+
+    document.getElementById('empresa').value = '';
+    document.getElementById('inicio').value = '';
+    document.getElementById('fim').value = '';
+    document.getElementById('ativo').checked = false;
+    toggleFim();
+}
+
+function editarContrato(idx) {
+    const contrato = contratos[idx];
+    const novaEmpresa = prompt('Novo Nome da Empresa:', contrato.empresa);
+    const novoInicio = prompt('Novo Início (AAAA-MM-DD):', contrato.inicio);
+    const novoFimStr = contrato.fim ? contrato.fim : '';
+    
+    const novoFim = prompt('Novo Fim (AAAA-MM-DD) - Deixe vazio se for Ativo:', novoFimStr);
+
+    if (novaEmpresa !== null && novoInicio !== null) {
+        contratos[idx] = { 
+            empresa: novaEmpresa, 
+            inicio: novoInicio, 
+            fim: novoFim && novoFim.trim() !== '' ? novoFim : null 
+        };
+        salvarLocal();
+        renderContratos();
+    }
+}
+
+function excluirContrato(idx) {
+    if (confirm('Tem certeza que deseja excluir este contrato?')) {
+        contratos.splice(idx, 1);
+        salvarLocal();
+        renderContratos();
+    }
+}
+
+function exportarJSON() {
+    if (contratos.length === 0) {
+        alert("⚠️ Não há contratos para exportar. Adicione contratos antes de exportar.");
+        return;
+    }
+    
+    const dadosExportar = {
+        dadosPessoais: dadosPessoais,
+        contratos: contratos,
+        dataExportacao: new Date().toISOString()
+    };
+    
+    const blob = new Blob([JSON.stringify(dadosExportar, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tempo_servico_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    alert("✅ Arquivo exportado com sucesso!");
+}
+
+function importarJSON(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const dadosImportados = JSON.parse(e.target.result);
+            if (Array.isArray(dadosImportados)) {
+                contratos = dadosImportados;
+                salvarLocal();
+                renderContratos();
+                alert("✅ Dados importados com sucesso!");
+            } else {
+                alert("❌ O arquivo JSON não contém um formato de contratos válido.");
+            }
+        } catch (error) {
+            alert("❌ Erro ao processar o arquivo JSON. Verifique o formato.");
+            console.error("Erro na importação: ", error);
+        }
+    };
+    reader.readAsText(file);
+}
+
+function calcular() {
+    if (contratos.length === 0) {
+        alert("⚠️ Adicione pelo menos um contrato antes de calcular.");
+        return;
+    }
+
+    let total = { anos: 0, meses: 0, dias: 0 };
+
+    contratos.forEach(c => {
+        let d = diferencaData(c.inicio, c.fim);
+        total.dias += d.dias;
+        total.meses += d.meses;
+        total.anos += d.anos;
+    });
+
+    total.meses += Math.floor(total.dias / 30);
+    total.dias = total.dias % 30;
+
+    total.anos += Math.floor(total.meses / 12);
+    total.meses = total.meses % 12;
+
+    const nascimento = document.getElementById('nascimento').value;
+    const sexo = document.getElementById('sexo').value;
+
+    if (!nascimento) {
+        alert("⚠️ Preencha a data de nascimento antes de calcular!");
+        document.getElementById('nascimento').focus();
+        return;
+    }
+
+    const hoje = new Date();
+    const nasc = new Date(nascimento);
+    let idade = hoje.getFullYear() - nasc.getFullYear();
+    let m = hoje.getMonth() - nasc.getMonth();
+    if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+
+    let idadeAposentadoria = sexo === "M" ? 65 : 62;
+    let pontosNecessarios = sexo === "M" ? 105 : 95;
+
+    let pontosAtuais = idade + total.anos;
+    let faltaPontos = pontosNecessarios - pontosAtuais;
+    let anosFaltamIdade = idadeAposentadoria - idade;
+
+    let resultado = `<strong>⏱️ Tempo total de serviço:</strong> ${total.anos} anos, ${total.meses} meses e ${total.dias} dias.<br>`;
+    resultado += `<strong>👤 Idade atual:</strong> ${idade} anos.<br>`;
+    resultado += `<strong>📊 Pontos atuais:</strong> ${pontosAtuais} (necessário: ${pontosNecessarios}).<br>`;
+
+    if (faltaPontos > 0)
+        resultado += `Faltam <strong>${faltaPontos}</strong> pontos para atingir a pontuação necessária.<br>`;
+    else
+        resultado += `<span style="color: #4CAF50; font-weight: bold;">✅ Pontuação suficiente para se aposentar por pontos!</span><br>`;
+
+    if (anosFaltamIdade > 0)
+        resultado += `Faltam <strong>${anosFaltamIdade}</strong> anos para atingir a idade mínima de aposentadoria (${idadeAposentadoria} anos).`;
+    else
+        resultado += `<span style="color: #4CAF50; font-weight: bold;">✅ Idade mínima já atingida!</span>`;
+
+    const divResultado = document.getElementById('resultado');
+    divResultado.innerHTML = resultado;
+    divResultado.style.display = 'block';
+    
+    // Scroll suave com timeout para evitar travamentos
+    setTimeout(() => {
+        divResultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+}
+
+// Carregar dados pessoais ao iniciar
+carregarDadosPessoais();
+renderContratos();
+</script>
+</body>
+</html>        color: #667eea;
         border-bottom: 2px solid #667eea;
         padding-bottom: 10px;
         margin-top: 30px;
