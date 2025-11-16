@@ -536,19 +536,78 @@ function importarJSON(event) {
     reader.onload = (e) => {
         try {
             const dadosImportados = JSON.parse(e.target.result);
-            if (Array.isArray(dadosImportados)) {
-                contratos = dadosImportados;
-                salvarLocal();
-                renderContratos();
-                alert("✅ Dados importados com sucesso!");
-            } else {
-                alert("❌ O arquivo JSON não contém um formato de contratos válido.");
+            
+            console.log("Dados importados:", dadosImportados); // Debug
+            
+            // Verifica se é o formato novo (com dadosPessoais e contratos)
+            if (dadosImportados && typeof dadosImportados === 'object') {
+                
+                // Formato completo: { dadosPessoais: {...}, contratos: [...] }
+                if (dadosImportados.dadosPessoais && Array.isArray(dadosImportados.contratos)) {
+                    contratos = dadosImportados.contratos;
+                    dadosPessoais = dadosImportados.dadosPessoais;
+                    
+                    salvarLocal();
+                    localStorage.setItem('dadosPessoais', JSON.stringify(dadosPessoais));
+                    
+                    carregarDadosPessoais();
+                    renderContratos();
+                    
+                    alert("✅ Dados importados com sucesso!\n\n" + 
+                          `Contratos: ${contratos.length}\n` +
+                          `Data de nascimento: ${dadosPessoais.nascimento || 'Não informada'}\n` +
+                          `Sexo: ${dadosPessoais.sexo === 'M' ? 'Homem' : 'Mulher'}`);
+                } 
+                // Formato antigo: apenas array de contratos
+                else if (Array.isArray(dadosImportados)) {
+                    contratos = dadosImportados;
+                    salvarLocal();
+                    renderContratos();
+                    alert(`✅ Contratos importados com sucesso!\n\nTotal: ${contratos.length} contratos`);
+                }
+                // Tenta verificar se tem apenas a propriedade contratos
+                else if (dadosImportados.contratos && Array.isArray(dadosImportados.contratos)) {
+                    contratos = dadosImportados.contratos;
+                    
+                    // Se tiver dadosPessoais, importa também
+                    if (dadosImportados.dadosPessoais) {
+                        dadosPessoais = dadosImportados.dadosPessoais;
+                        localStorage.setItem('dadosPessoais', JSON.stringify(dadosPessoais));
+                        carregarDadosPessoais();
+                    }
+                    
+                    salvarLocal();
+                    renderContratos();
+                    alert(`✅ Dados importados com sucesso!\n\nTotal: ${contratos.length} contratos`);
+                }
+                else {
+                    alert("❌ O arquivo JSON não contém um formato válido.\n\n" +
+                          "Formato esperado:\n" +
+                          "• Array de contratos, ou\n" +
+                          "• Objeto com 'contratos' e 'dadosPessoais'");
+                    console.error("Formato inválido:", dadosImportados);
+                }
+            } 
+            else {
+                alert("❌ O arquivo JSON não pôde ser lido corretamente.");
             }
+            
+            // Limpar o input file
+            event.target.value = '';
         } catch (error) {
-            alert("❌ Erro ao processar o arquivo JSON. Verifique o formato.");
+            alert("❌ Erro ao processar o arquivo JSON.\n\n" +
+                  "Verifique se o arquivo está corrompido ou tem formato inválido.\n\n" +
+                  "Erro: " + error.message);
             console.error("Erro na importação: ", error);
+            event.target.value = '';
         }
     };
+    
+    reader.onerror = () => {
+        alert("❌ Erro ao ler o arquivo. Tente novamente.");
+        event.target.value = '';
+    };
+    
     reader.readAsText(file);
 }
 
@@ -600,28 +659,4 @@ function calcular() {
     resultado += `<strong>📊 Pontos atuais:</strong> ${pontosAtuais} (necessário: ${pontosNecessarios}).<br>`;
 
     if (faltaPontos > 0)
-        resultado += `Faltam <strong>${faltaPontos}</strong> pontos para atingir a pontuação necessária.<br>`;
-    else
-        resultado += `<span style="color: #4CAF50; font-weight: bold;">✅ Pontuação suficiente para se aposentar por pontos!</span><br>`;
-
-    if (anosFaltamIdade > 0)
-        resultado += `Faltam <strong>${anosFaltamIdade}</strong> anos para atingir a idade mínima de aposentadoria (${idadeAposentadoria} anos).`;
-    else
-        resultado += `<span style="color: #4CAF50; font-weight: bold;">✅ Idade mínima já atingida!</span>`;
-
-    const divResultado = document.getElementById('resultado');
-    divResultado.innerHTML = resultado;
-    divResultado.style.display = 'block';
-    
-    // Scroll suave com timeout para evitar travamentos
-    setTimeout(() => {
-        divResultado.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
-}
-
-// Carregar dados pessoais ao iniciar
-carregarDadosPessoais();
-renderContratos();
-</script>
-</body>
-</html>
+        resultado += `Faltam <strong>${faltaPon
